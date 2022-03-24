@@ -108,6 +108,7 @@
                         method: 'DELETE'
                     });
                     this.listarEquipos();
+                    console.log(data)
                 }
                 catch(error) {
                     console.log(error);
@@ -128,6 +129,7 @@
                         },
                         body: JSON.stringify(datosEquipoGuardar)
                     });
+                    console.log(data)
                     this.listarEquipos();
                 }
                 catch(error) {
