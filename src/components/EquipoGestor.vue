@@ -7,18 +7,18 @@
                         <div class="card-body">
                             <h4 class="card-title">Crear Equipo</h4>
                             <div>
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <input type="text" name="nombre" class="form-control" placeholder="Nombre del equipo" v-model="datosNuevoEquipo.nombre"/>
                                 </div>
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <input type="text" name="email" class="form-control" placeholder="Email de contacto" v-model="datosNuevoEquipo.email"/>
                                 </div>
-                                <div class="form-group">
+                                <div class="mb-3">
                                     <input type="text" name="logo" class="form-control" placeholder="Logo" v-model="datosNuevoEquipo.logo"/>
                                 </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-success btn-block" @click="addEquipo">Guardar</button>
-                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-success" @click="addEquipo">Guardar</button>
+                                </div>  
                             </div>
                         </div>
                     </div>
