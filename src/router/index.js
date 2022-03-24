@@ -10,6 +10,11 @@ const routes = [
         path: '/equipos',
         name: 'equipos-gestor',
         component: () => import('@/components/EquipoGestor.vue')
+    },
+    {
+        path: '/jugadores',
+        name: 'jugadores-gestor',
+        component: () => import('@/components/JugadorGestor.vue')
     }
 ]
 
