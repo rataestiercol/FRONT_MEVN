@@ -1,4 +1,5 @@
 <template>
+    <NavBar></NavBar>
     <div class="container-fluid main-panel mt-5">
         <div class="content-wrapper pt-4">
             <div class="row">
@@ -57,7 +58,6 @@
             </div>            
         </div>
     </div>
-
     <!-- Modal Editar Equipo-->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -86,15 +86,18 @@
             </div>
         </div>
     </div>
-
-
 </template>
 
 <script>
 
+    import NavBar from '@/components/Navbar'
+
     export default {
         name: 'EquipoGestor',
-        data (){
+        components: {
+            NavBar
+        },
+        data() {
             return {
                 equipos: [],
                 datosNuevoEquipo: {
