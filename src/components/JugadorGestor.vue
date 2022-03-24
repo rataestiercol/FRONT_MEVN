@@ -6,7 +6,7 @@
                 <div class="col-md-4 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Crear Equipo</h4>
+                            <h4 class="card-title">Crear Jugador</h4>
                             <div>
                                 <div class="mb-3">
                                     <input type="text" name="nombre" class="form-control" placeholder="Nombre del Jugador" v-model="datosNuevoJugador.nombre"/>
@@ -25,25 +25,25 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-sm-flex align-items-center mb-4">
-                                <h4 class="card-title mb-sm-0">Lista de Equipos</h4>
+                                <h4 class="card-title mb-sm-0">Lista de Jugadores</h4>
                             </div>
                             <div class="table-responsive p-1">
                                 <table class="table table-striped" id="listaJugadores">
                                     <thead>
                                         <tr>
                                             <th class="font-weight-bold">Nombre</th>
-                                            <th class="font-weight-bold">Email contacto</th>
+                                            <th class="font-weight-bold">Fecha de Nacimiento</th>
                                             <th class="font-weight-bold">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(equipo, keyEquipo) in this.equipos" :key="keyEquipo">
-                                            <td>{{equipo.nombre}}</td>
-                                            <td>{{equipo.emailContacto}}</td>
+                                        <tr v-for="(jugador, keyJugador) in this.jugadores" :key="keyJugador">
+                                            <td>{{jugador.nombre}}</td>
+                                            <td>{{jugador.fechaNacimiento}}</td>
                                             <td>
-                                                <button class="btn btn-warning btn-circle btn-circle-sm m-1"><i class="fas fa-users"></i></button>
-                                                <button class="btn btn-primary btn-circle btn-circle-sm m-1" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="editarEquipo(equipo.id, equipo.nombre, equipo.emailContacto, equipo.logoUrl)"><i class="fas fa-edit"></i></button>
-                                                <button class="btn btn-danger btn-circle btn-circle-sm m-1" @click="eliminarEquipo(equipo.id)"><i class="fas fa-trash-alt"></i></button>
+                                                <button class="btn btn-warning btn-circle btn-circle-sm m-1" data-bs-toggle="modal" data-bs-target="#popupAddEquipos" @click="addEquipos(jugador.id, jugador.nombre, jugador.fechaNacimiento)"><i class="fas fa-users"></i></button>
+                                                <button class="btn btn-primary btn-circle btn-circle-sm m-1" data-bs-toggle="modal" data-bs-target="#editarJugador" @click="editarJugador(jugador.id, jugador.nombre, jugador.fechaNacimiento)"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-danger btn-circle btn-circle-sm m-1" @click="eliminarJugador(jugador.id)"><i class="fas fa-trash-alt"></i></button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -55,34 +55,82 @@
             </div>            
         </div>
     </div>
-    <!-- Modal Editar Equipo-->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Modal Editar Jugador-->
+    <div class="modal fade" id="editarJugador" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Editar Equipo</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div>
-                    <div class="mb-3">
-                        <input type="text" name="nombre" class="form-control" placeholder="Nombre del equipo" v-model="popupEditar.nombre"/>
-                    </div>
-                    <div class="mb-3">
-                        <input type="text" name="email" class="form-control" placeholder="Email de contacto" v-model="popupEditar.email"/>
-                    </div>
-                    <div class="mb-3">
-                        <input type="text" name="logo" class="form-control" placeholder="Logo" v-model="popupEditar.logo"/>
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar jugador</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="mb-3">
+                            <input type="text" name="nombre" class="form-control" placeholder="Nombre del jugador" v-model="popupEditar.nombre"/>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" name="email" class="form-control" placeholder="Fecha de nacimiento" v-model="popupEditar.fechaNacimiento"/>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="guardarEditarEquipo(popupEditar.id)">Guardar</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="guardarEditarJugador(popupEditar.id)">Guardar</button>
+                </div>
             </div>
         </div>
     </div>
+
+
+    <!-- Modal añadir jugadores a equipos -->
+    <div class="modal fade" id="popupAddEquipos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Equipos de jugador</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" id="dorsalEnEquipo" placeholder="Dorsal" />
+                        </div>
+                        <div class="col">
+                            <select id="selectEquipo" class="form-select">
+                                <option>Selecciona un equipo</option>
+                                <option v-for="(equipo, keyEquipos) in this.popupEquipos.equiposTodos" :key="keyEquipos">{{equipo.nombre}}</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-primary" type="button" @click="addEquipoJugador">Añadir</button>
+                        </div>
+                        <div class="invalid-feedback errorEquipoYaAdd" style="text-align: center;">
+                            El equipo ya está en la lista.
+                        </div>
+                    </div>
+                    <table class="table table-striped" id="listaEquipos" data-idjugador="">
+                        <thead>
+                            <tr>
+                                <th class="celdaAjustada">Dorsal</th>
+                                <th class="font-weight-bold">Nombre</th>
+                                <th class="celdaAjustada">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="equiposAnadidos">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="guardarEquipos" data-idjugador="">Guardar</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
+
+
 </template>
 
 <script>
@@ -90,13 +138,14 @@
     import NavBar from '@/components/Navbar'
 
     export default {
-        name: 'EquipoGestor',
+        name: 'JugadorGestor',
         components: {
             NavBar
         },
         data() {
             return {
-                equipos: [],
+                jugadores: [],
+                
                 datosNuevoJugador: {
                     nombre: "",
                     fechaNacimiento:  ""
@@ -104,46 +153,49 @@
                 popupEditar: {
                     id: "",
                     nombre: "",
-                    logo:  "",
-                    email: ""
+                    fechaNacimiento:  ""
+                },
+                popupEquipos: {
+                    id: "",
+                    equiposTodos: [],
+                    equiposAsignados: []
                 }
             }
         },
         mounted() {
-            this.listarEquipos();
+            this.listarJugadores();
         },
         methods: {
-            async listarEquipos() {
-                this.equipos = [];
+            async listarJugadores() {
+                this.jugadores = [];
                 try {
-                    const data = await fetch(`http://localhost:4000/equipo`, {
+                    const data = await fetch(`http://localhost:4000/jugador`, {
                         method: 'GET'
                     });
                     const decoder = new TextDecoder('UTF-8');
                     const buffer = await data.arrayBuffer();
                     const resData = await JSON.parse(decoder.decode(buffer));
-                    const arrayEquipos = [];
+                    const arrayJugadores = [];
 
-                    resData.forEach(equipo => {
-                        arrayEquipos.push({
-                                            'id': equipo._id,
-                                            'nombre': equipo.nombre,
-                                            'logoUrl': equipo.logoUrl,
-                                            'emailContacto': equipo.emailContacto
+                    resData.forEach(jugador => {
+                        arrayJugadores.push({
+                                            'id': jugador._id,
+                                            'nombre': jugador.nombre,
+                                            'fechaNacimiento' : jugador.fechaNacimiento,
                                         });
                     });
-                    this.equipos = [...this.equipos, ...arrayEquipos];
+                    this.jugadores = [...this.jugadores, ...arrayJugadores];
                 }
                 catch (error){
                     console.log(error);
                 }
             },
-            async eliminarEquipo(idEquipo){
+            async eliminarJugador(idJugador){
                 try {
-                    const data = await fetch(`http://localhost:4000/equipo/${idEquipo}`, {
+                    const data = await fetch(`http://localhost:4000/jugador/${idJugador}`, {
                         method: 'DELETE'
                     });
-                    this.listarEquipos();
+                    this.listarJugadores();
                     console.log(data)
                 }
                 catch(error) {
@@ -156,52 +208,82 @@
                     'fechaNacimiento': this.datosNuevoJugador.fechaNacimiento,
                 }
                 try {
-                    const data = await fetch(`http://localhost:4000/equipo`, {
+                    const data = await fetch(`http://localhost:4000/jugador`, {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify(datosEquipoGuardar)
+                        body: JSON.stringify(datosJugadorGuardar)
                     });
                     console.log(data)
-                    this.listarEquipos();
+                    this.listarJugadores();
                 }
                 catch(error) {
                     console.log(error);
                 }
             },
-            editarEquipo(idEquipo, nombre, emailContacto, logoUrl) {
-                this.popupEditar.id = idEquipo
+            editarJugador(idJugador, nombre, fechaNacimiento) {
+                this.popupEditar.id = idJugador
                 this.popupEditar.nombre = nombre;
-                this.popupEditar.logo = logoUrl;
-                this.popupEditar.email = emailContacto;
+                this.popupEditar.fechaNacimiento = fechaNacimiento;
             },
-            async guardarEditarEquipo(idEquipo) {
-                const datosEquipoEditar = {
+            async guardarEditarJugador(idJugador) {
+                const datosJugadorEditar = {
                     'nombre': this.popupEditar.nombre,
-                    'logoUrl': this.popupEditar.logo,
-                    'emailContacto': this.popupEditar.email
+                    'fechaNacimiento': this.popupEditar.fechaNacimiento,
                 }
                 try {
-                    const data = await fetch(`http://localhost:4000/equipo/${idEquipo}`, {
+                    const data = await fetch(`http://localhost:4000/jugador/${idJugador}`, {
                         method: 'PUT',
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify(datosEquipoEditar)
+                        body: JSON.stringify(datosJugadorEditar)
                     });
                     const decoder = new TextDecoder('UTF-8');
                     const buffer = await data.arrayBuffer();
                     const resData = await JSON.parse(decoder.decode(buffer));
 
                     console.log(resData);
-                    this.listarEquipos();
+                    this.listarJugadores();
                 }
                 catch(error) {
                     console.log(error);
                 }
+            },
+            async addEquipos() {
+                try {
+                    const data = await fetch(`http://localhost:4000/equipo`, {
+                        method: 'GET'
+                    });
+                    const decoder = new TextDecoder('UTF-8');
+                    const buffer = await data.arrayBuffer();
+                    const resData = await JSON.parse(decoder.decode(buffer));
+                    this.popupEquipos.equiposTodos = []
+
+                    resData.forEach(equipo => {
+                        this.popupEquipos.equiposTodos.push({
+                                            'id': equipo._id,
+                                            'nombre': equipo.nombre,
+                                            'logoUrl': equipo.logoUrl,
+                                            'emailContacto': equipo.emailContacto
+                                        });
+                    });
+
+                    console.log(this.popupEquipos.equiposTodos);
+
+                    // popupEquipos.id
+                    // popupEquipos.equiposTodos
+                    // popupEquipos.equiposAsignados
+                }
+                catch (error){
+                    console.log(error);
+                }
+            },
+            addEquipoJugador() {
+
             }
         }
     }
