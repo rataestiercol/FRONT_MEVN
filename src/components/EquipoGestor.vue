@@ -17,12 +17,6 @@
         },
         methods: {
             async listarEquipos() {
-
-                // const res = await listarEquipos();
-                // console.log(res);
-
-
-
                 try {
                     const data = await fetch(`http://localhost:4000/equipo`, {
                         method: 'GET',
