@@ -9,16 +9,13 @@
                             <h4 class="card-title">Crear Equipo</h4>
                             <div>
                                 <div class="mb-3">
-                                    <input type="text" name="nombre" class="form-control" placeholder="Nombre del equipo" v-model="datosNuevoEquipo.nombre"/>
+                                    <input type="text" name="nombre" class="form-control" placeholder="Nombre del Jugador" v-model="datosNuevoJugador.nombre"/>
                                 </div>
                                 <div class="mb-3">
-                                    <input type="text" name="email" class="form-control" placeholder="Email de contacto" v-model="datosNuevoEquipo.email"/>
-                                </div>
-                                <div class="mb-3">
-                                    <input type="text" name="logo" class="form-control" placeholder="Logo" v-model="datosNuevoEquipo.logo"/>
+                                    <input type="text" name="fechaNacimiento" class="form-control" placeholder="Fecha de nacimiento" v-model="datosNuevoJugador.fechaNacimiento"/>
                                 </div>
                                 <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-success" @click="addEquipo">Guardar</button>
+                                    <button type="submit" class="btn btn-success" @click="addJugador">Guardar</button>
                                 </div>  
                             </div>
                         </div>
@@ -100,10 +97,9 @@
         data() {
             return {
                 equipos: [],
-                datosNuevoEquipo: {
+                datosNuevoJugador: {
                     nombre: "",
-                    logo:  "",
-                    email: ""
+                    fechaNacimiento:  ""
                 },
                 popupEditar: {
                     id: "",
@@ -154,11 +150,10 @@
                     console.log(error);
                 }
             },
-            async addEquipo() {
-                const datosEquipoGuardar = {
-                    'nombre': this.datosNuevoEquipo.nombre,
-                    'logoUrl': this.datosNuevoEquipo.logo,
-                    'emailContacto': this.datosNuevoEquipo.email
+            async addJugador() {
+                const datosJugadorGuardar = {
+                    'nombre': this.datosNuevoJugador.nombre,
+                    'fechaNacimiento': this.datosNuevoJugador.fechaNacimiento,
                 }
                 try {
                     const data = await fetch(`http://localhost:4000/equipo`, {
@@ -207,11 +202,6 @@
                 catch(error) {
                     console.log(error);
                 }
-
-                // this.$router.push({
-                //     name: "login"
-                // })
-
             }
         }
     }
