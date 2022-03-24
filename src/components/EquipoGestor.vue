@@ -44,7 +44,7 @@
                                             <td>{{equipo.emailContacto}}</td>
                                             <td>
                                                 <button class="btn btn-warning btn-circle btn-circle-sm m-1"><i class="fas fa-users"></i></button>
-                                                <button class="btn btn-primary btn-circle btn-circle-sm m-1"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-primary btn-circle btn-circle-sm m-1" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="editarEquipo(equipo.id, equipo.nombre, equipo.emailContacto, equipo.logoUrl)"><i class="fas fa-edit"></i></button>
                                                 <button class="btn btn-danger btn-circle btn-circle-sm m-1" @click="eliminarEquipo(equipo.id)"><i class="fas fa-trash-alt"></i></button>
                                             </td>
                                         </tr>
@@ -57,6 +57,37 @@
             </div>            
         </div>
     </div>
+
+    <!-- Modal Editar Equipo-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar Equipo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="mb-3">
+                        <input type="text" name="nombre" class="form-control" placeholder="Nombre del equipo" v-model="popupEditar.nombre"/>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" name="email" class="form-control" placeholder="Email de contacto" v-model="popupEditar.email"/>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" name="logo" class="form-control" placeholder="Logo" v-model="popupEditar.logo"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="guardarEditarEquipo(popupEditar.id)">Guardar</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
 </template>
 
 <script>
@@ -67,6 +98,12 @@
             return {
                 equipos: [],
                 datosNuevoEquipo: {
+                    nombre: "",
+                    logo:  "",
+                    email: ""
+                },
+                popupEditar: {
+                    id: "",
                     nombre: "",
                     logo:  "",
                     email: ""
@@ -135,6 +172,41 @@
                 catch(error) {
                     console.log(error);
                 }
+            },
+            editarEquipo(idEquipo, nombre, emailContacto, logoUrl) {
+                this.popupEditar.id = idEquipo
+                this.popupEditar.nombre = nombre;
+                this.popupEditar.logo = logoUrl;
+                this.popupEditar.email = emailContacto;
+            },
+            async guardarEditarEquipo(idEquipo) {
+                const datosEquipoEditar = {
+                    'nombre': this.popupEditar.nombre,
+                    'logoUrl': this.popupEditar.logo,
+                    'emailContacto': this.popupEditar.email
+                }
+
+                try {
+                    const data = await fetch(`http://localhost:4000/equipo/${idEquipo}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(datosEquipoEditar)
+                    });
+                    const decoder = new TextDecoder('UTF-8');
+                    const buffer = await data.arrayBuffer();
+                    const resData = await JSON.parse(decoder.decode(buffer));
+
+                    console.log(resData);
+                    this.listarEquipos();
+                }
+                catch(error) {
+                    console.log(error);
+                }
+
+
             }
         }
     }
