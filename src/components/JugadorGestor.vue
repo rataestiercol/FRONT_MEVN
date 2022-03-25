@@ -41,7 +41,7 @@
                                             <td>{{jugador.nombre}}</td>
                                             <td>{{jugador.fechaNacimiento}}</td>
                                             <td>
-                                                <button class="btn btn-warning btn-circle btn-circle-sm m-1" data-bs-toggle="modal" data-bs-target="#popupAddEquipos" @click="addEquipos(jugador.id, jugador.nombre, jugador.fechaNacimiento)"><i class="fas fa-users"></i></button>
+                                                <button class="btn btn-warning btn-circle btn-circle-sm m-1" data-bs-toggle="modal" data-bs-target="#popupAddEquipos" @click="addEquipos(jugador.id)"><i class="fas fa-users"></i></button>
                                                 <button class="btn btn-primary btn-circle btn-circle-sm m-1" data-bs-toggle="modal" data-bs-target="#editarJugador" @click="editarJugador(jugador.id, jugador.nombre, jugador.fechaNacimiento)"><i class="fas fa-edit"></i></button>
                                                 <button class="btn btn-danger btn-circle btn-circle-sm m-1" @click="eliminarJugador(jugador.id)"><i class="fas fa-trash-alt"></i></button>
                                             </td>
@@ -93,12 +93,12 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col">
-                            <input type="text" class="form-control" id="dorsalEnEquipo" placeholder="Dorsal" />
+                            <input type="text" class="form-control" placeholder="Dorsal" v-model="popupAddEquipo.dorsal"/>
                         </div>
                         <div class="col">
-                            <select id="selectEquipo" class="form-select">
+                            <select id="selectEquipo" class="form-select" v-model="popupAddEquipo.equipoSeleccionadoId">
                                 <option>Selecciona un equipo</option>
-                                <option v-for="(equipo, keyEquipos) in this.popupEquipos.equiposTodos" :key="keyEquipos">{{equipo.nombre}}</option>
+                                <option v-for="(equipo, keyEquipos) in this.listaTodosEquipos" :key="keyEquipos" :value="equipo.id">{{equipo.nombre}}</option>
                             </select>
                         </div>
                         <div class="col">
@@ -111,26 +111,23 @@
                     <table class="table table-striped" id="listaEquipos" data-idjugador="">
                         <thead>
                             <tr>
-                                <th class="celdaAjustada">Dorsal</th>
-                                <th class="font-weight-bold">Nombre</th>
-                                <th class="celdaAjustada">Acciones</th>
+                                <th>Dorsal</th>
+                                <th>Nombre</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody id="equiposAnadidos">
+                        <tbody>
+                            <tr v-for="(equipo, keyEquipo) in this.popupAddEquipo.equiposDelJugador" :key="keyEquipo">
+                                <td>{{equipo.dorsal}}</td>
+                                <td>{{equipo.nombre}}</td>
+                                <td><button class="btn btn-danger" type="button" @click="eliminarJugadorDeEquipo(equipo.id)">Eliminar</button></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" id="guardarEquipos" data-idjugador="">Guardar</button>
-                </div>
-                
             </div>
         </div>
     </div>
-
-
-
-
 </template>
 
 <script>
@@ -145,7 +142,7 @@
         data() {
             return {
                 jugadores: [],
-                
+                listaTodosEquipos: [],
                 datosNuevoJugador: {
                     nombre: "",
                     fechaNacimiento:  ""
@@ -155,10 +152,11 @@
                     nombre: "",
                     fechaNacimiento:  ""
                 },
-                popupEquipos: {
-                    id: "",
-                    equiposTodos: [],
-                    equiposAsignados: []
+                popupAddEquipo: {
+                    dorsal: "",
+                    equipoSeleccionadoId: "",
+                    jugadorId: "",
+                    equiposDelJugador: []
                 }
             }
         },
@@ -231,7 +229,7 @@
             async guardarEditarJugador(idJugador) {
                 const datosJugadorEditar = {
                     'nombre': this.popupEditar.nombre,
-                    'fechaNacimiento': this.popupEditar.fechaNacimiento,
+                    'fechaNacimiento': this.popupEditar.fechaNacimiento
                 }
                 try {
                     const data = await fetch(`http://localhost:4000/jugador/${idJugador}`, {
@@ -253,7 +251,7 @@
                     console.log(error);
                 }
             },
-            async addEquipos() {
+            async addEquipos(jugadorId) {
                 try {
                     const data = await fetch(`http://localhost:4000/equipo`, {
                         method: 'GET'
@@ -261,10 +259,10 @@
                     const decoder = new TextDecoder('UTF-8');
                     const buffer = await data.arrayBuffer();
                     const resData = await JSON.parse(decoder.decode(buffer));
-                    this.popupEquipos.equiposTodos = []
+                    this.listaTodosEquipos = []
 
                     resData.forEach(equipo => {
-                        this.popupEquipos.equiposTodos.push({
+                        this.listaTodosEquipos.push({
                                             'id': equipo._id,
                                             'nombre': equipo.nombre,
                                             'logoUrl': equipo.logoUrl,
@@ -272,18 +270,66 @@
                                         });
                     });
 
-                    console.log(this.popupEquipos.equiposTodos);
+                    this.popupAddEquipo.jugadorId = jugadorId;
+                }
+                catch (error){
+                    console.log(error);
+                }
 
-                    // popupEquipos.id
-                    // popupEquipos.equiposTodos
-                    // popupEquipos.equiposAsignados
+                this.buscarEquiposDelJugador(jugadorId);
+            },
+            async addEquipoJugador() {
+                const datosAddEquipo = {
+                    'dorsal': this.popupAddEquipo.dorsal,
+                    'idEquipo': this.popupAddEquipo.equipoSeleccionadoId
+                }
+                try {
+                    const data = await fetch(`http://localhost:4000/jugador/addEquipo/${this.popupAddEquipo.jugadorId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(datosAddEquipo)
+                    });
+                    const decoder = new TextDecoder('UTF-8');
+                    const buffer = await data.arrayBuffer();
+                    const resData = await JSON.parse(decoder.decode(buffer));
+
+                    console.log(resData);
+                    this.listarJugadores();
+                }
+                catch(error) {
+                    console.log(error);
+                }
+
+                this.buscarEquiposDelJugador(this.popupAddEquipo.jugadorId);
+            },
+            async buscarEquiposDelJugador(jugadorId) {
+                try {
+                    const data = await fetch(`http://localhost:4000/jugador/equiposJugador/${jugadorId}`, {
+                        method: 'GET'
+                    });
+                    const decoder = new TextDecoder('UTF-8');
+                    const buffer = await data.arrayBuffer();
+                    const resData = await JSON.parse(decoder.decode(buffer));
+
+                    this.popupAddEquipo.equiposDelJugador = [];
+                    
+                    resData.equipos.forEach(dato => {
+                        this.popupAddEquipo.equiposDelJugador.push({
+                            'id': dato.equipo._id,
+                            'dorsal': dato.dorsal,
+                            'nombre': dato.equipo.nombre
+                        });
+                    });
                 }
                 catch (error){
                     console.log(error);
                 }
             },
-            addEquipoJugador() {
-
+            async eliminarJugadorDeEquipo(idEquipo) {
+                /*IMPLEMENTAR*/
             }
         }
     }
