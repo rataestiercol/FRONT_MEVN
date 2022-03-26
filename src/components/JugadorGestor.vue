@@ -330,6 +330,7 @@
             },
             async eliminarJugadorDeEquipo(idEquipo) {
                 /*IMPLEMENTAR*/
+                console.log(idEquipo);
             }
         }
     }

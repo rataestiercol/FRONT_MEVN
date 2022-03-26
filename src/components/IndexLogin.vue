@@ -1,4 +1,5 @@
 <template>
+    <NavBar></NavBar>
     <div class="container mt-5">
         <div class="row d-flex justify-content-center">
             <div class="col-md-6">
@@ -22,6 +23,8 @@
 </template>
 
 <script>
+    import NavBar from '@/components/Navbar'
+
     export default {
         data() {
             return {
@@ -32,6 +35,9 @@
                 password: "",
                 passwordBlured: false
             }
+        },
+        components: {
+            NavBar
         },
         methods:{
             validate : function(){
