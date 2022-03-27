@@ -8,16 +8,16 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <router-link to="/" class="nav-link">Inicio</router-link>
+                        <router-link to="/" class="nav-link" active-class="active">Inicio</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/torneos" class="nav-link">Torneos</router-link>
+                        <router-link to="/torneos" class="nav-link" active-class="active">Torneos</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/equipos" class="nav-link">Equipos</router-link>
+                        <router-link to="/equipos" class="nav-link" active-class="active">Equipos</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/jugadores" class="nav-link">Jugadores</router-link>
+                        <router-link to="/jugadores" class="nav-link" active-class="active">Jugadores</router-link>
                     </li>
                 </ul>
             </div>
