@@ -3,8 +3,8 @@
     <div class="container-fluid main-panel mt-5">
         <div class="content-wrapper pt-4">
             <div class="row">
-                <div class="col-md-4 grid-margin stretch-card">
-                    <div class="card">
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card mb-3">
                         <div class="card-body">
                             <h4 class="card-title">Crear Torneo</h4>
                             <div>
@@ -26,40 +26,26 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-8 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-sm-flex align-items-center mb-4">
-                                <h4 class="card-title mb-sm-0">Lista de Torneos</h4>
+                    <div class="list-group">
+                        <a v-for="(torneo, keyTorneo) in torneos" :key="keyTorneo" href="#" class="list-group-item list-group-item-action" aria-current="true" @click="gestionarTorneo(torneo.id)">
+                            <div class="d-flex w-100 justify-content-between mb-2">
+                                <h5 class="mb-1">{{torneo.nombre}}</h5>
+                                <small>{{torneo.fecha}}</small>
                             </div>
-                            <div class="table-responsive p-1">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th class="font-weight-bold">Nombre</th>
-                                            <th class="font-weight-bold">Lugar</th>
-                                            <th class="font-weight-bold">Fecha</th>
-                                            <th class="font-weight-bold">Nº campos</th>
-                                            <th class="font-weight-bold">Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="(torneo, keyTorneo) in torneos" :key="keyTorneo">
-                                            <td>{{torneo.nombre}}</td>
-                                            <td>{{torneo.lugar}}</td>
-                                            <td>{{torneo.fecha}}</td>
-                                            <td>{{torneo.numCampos}}</td>
-                                            <td>
-                                                <button class="btn btn-danger btn-circle btn-circle-sm m-1" @click="eliminarTorneo(torneo.id)"><i class="fas fa-trash-alt"></i></button>
-                                                <button class="btn btn-primary btn-circle btn-circle-sm m-1" data-bs-toggle="modal" data-bs-target="#editarTorneo" @click="editarTorneo(torneo.id, torneo.nombre, torneo.lugar, torneo.fecha, torneo.numCampos)"><i class="fas fa-edit"></i></button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{torneo.lugar}}</h6>
+                                <div>
+                                    <button class="btn btn-primary btn-circle btn-circle-sm m-1" data-bs-toggle="modal" data-bs-target="#editarTorneo" @click="editarTorneo(torneo.id, torneo.nombre, torneo.lugar, torneo.fecha, torneo.numCampos)"><i class="fas fa-edit"></i></button>
+                                    <button class="btn btn-danger btn-circle btn-circle-sm m-1" @click="eliminarTorneo(torneo.id)"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </div>    
+                        </a>
                     </div>
+
+
+                </div>
+                <div class="col-md-6 grid-margin stretch-card">
+
                 </div>
             </div>            
         </div>
@@ -227,6 +213,9 @@
                 catch(error) {
                     console.log(error);
                 }
+            },
+            gestionarTorneo(idTorneo) {
+                console.log(idTorneo)
             }
         }
     }
