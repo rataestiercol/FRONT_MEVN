@@ -15,7 +15,7 @@
                                     <input type="text" name="fechaNacimiento" class="form-control" placeholder="Fecha de nacimiento" v-model="datosNuevoJugador.fechaNacimiento"/>
                                 </div>
                                 <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-success" @click="addJugador">Guardar</button>
+                                    <button type="button" class="btn btn-success" @click="addJugador">Guardar</button>
                                 </div>  
                             </div>
                         </div>

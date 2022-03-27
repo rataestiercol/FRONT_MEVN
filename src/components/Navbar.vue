@@ -11,7 +11,7 @@
                         <router-link to="/" class="nav-link">Inicio</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/" class="nav-link">Torneos</router-link>
+                        <router-link to="/torneos" class="nav-link">Torneos</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link to="/equipos" class="nav-link">Equipos</router-link>

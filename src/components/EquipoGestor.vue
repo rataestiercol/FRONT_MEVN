@@ -18,7 +18,7 @@
                                     <input type="text" name="logo" class="form-control" placeholder="Logo" v-model="datosNuevoEquipo.logo"/>
                                 </div>
                                 <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-success" @click="addEquipo">Guardar</button>
+                                    <button type="button" class="btn btn-success" @click="addEquipo">Guardar</button>
                                 </div>  
                             </div>
                         </div>
