@@ -45,7 +45,7 @@
                                             <td>{{equipo.emailContacto}}</td>
                                             <td>
                                                 <button class="btn btn-warning btn-circle btn-circle-sm m-1"><i class="fas fa-users"></i></button>
-                                                <button class="btn btn-primary btn-circle btn-circle-sm m-1" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="editarEquipo(equipo.id, equipo.nombre, equipo.emailContacto, equipo.logoUrl)"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-primary btn-circle btn-circle-sm m-1" data-bs-toggle="modal" data-bs-target="#editarEquipo" @click="editarEquipo(equipo.id, equipo.nombre, equipo.emailContacto, equipo.logoUrl)"><i class="fas fa-edit"></i></button>
                                                 <button class="btn btn-danger btn-circle btn-circle-sm m-1" @click="eliminarEquipo(equipo.id)"><i class="fas fa-trash-alt"></i></button>
                                             </td>
                                         </tr>
@@ -59,11 +59,11 @@
         </div>
     </div>
     <!-- Modal Editar Equipo-->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editarEquipo" tabindex="-1" aria-labelledby="editarEquipoLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Editar Equipo</h5>
+                <h5 class="modal-title" id="editarEquipoLabel">Editar Equipo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -207,11 +207,6 @@
                 catch(error) {
                     console.log(error);
                 }
-
-                // this.$router.push({
-                //     name: "login"
-                // })
-
             }
         }
     }
